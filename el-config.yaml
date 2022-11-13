@@ -1,0 +1,6 @@
+chain_id: ${CHAIN_ID}
+deposit_contract_address: "${DEPOSIT_CONTRACT_ADDRESS}"
+el_premine_addrs: {
+  "0x1eA692E68a7765dE26FC03A6D74EE5B56A7e2b4d": 1000000000ETH
+}
+genesis_timestamp: ${GENESIS_TIMESTAMP}

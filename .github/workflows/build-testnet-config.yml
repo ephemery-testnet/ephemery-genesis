@@ -1,0 +1,66 @@
+
+name: Build Testnet Config
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build_config:
+    name: Build Testnet Config
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: '${{ secrets.STAGING_TOKEN }}'
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+
+    - name: Build testnet configs
+      run: bash ./scripts/build-genesis.sh
+
+    - name: Pack testnet configs
+      run: cd dist && tar cfz testnet-all.tar.gz *
+
+    - name: Upload full config artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/testnet-all.tar.gz
+        name: testnet-all.tar.gz
+    
+    - name: Upload genesis.json artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/genesis.json
+        name: genesis.json
+    - name: Upload besu.json artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/besu.json
+        name: besu.json
+    - name: Upload chainspec.json artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/chainspec.json
+        name: chainspec.json
+    
+    - name: Upload config.yaml artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/config.yaml
+        name: config.yaml
+    - name: Upload genesis.ssz artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./dist/genesis.ssz
+        name: genesis.ssz
+    

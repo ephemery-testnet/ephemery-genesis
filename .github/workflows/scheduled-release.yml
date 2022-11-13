@@ -1,0 +1,141 @@
+
+name: Scheduled Release
+
+on:
+  schedule:
+  - cron: "20 * * * *"
+  workflow_dispatch:
+
+
+jobs:
+
+  check_genesis:
+    name: Check genesis time for next release
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    outputs:
+      can_release: ${{ steps.can_release.outputs.can_release }}
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Check genesis time
+      run: |
+        echo "can_release=$(bash ./scripts/check_can_release.sh | tr -d '\n')" >> $GITHUB_OUTPUT
+      id: can_release
+
+  build_release:
+    name: Build Release Config
+    needs: [check_genesis]
+    if: needs.check_genesis.outputs.can_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.8
+
+    - name: Build testnet configs
+      run: bash ./scripts/build-genesis.sh
+
+    - name: Get CHAIN_ID as version
+      run: |
+        echo "version=$(cat values.env | grep 'CHAIN_ID' | sed 's/.*CHAIN_ID=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
+        echo "genesis_time=$(cat values.env | grep 'GENESIS_TIMESTAMP' | sed 's/.*GENESIS_TIMESTAMP=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
+      id: version
+
+    
+
+    - name: Create draft release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        draft: false
+        prerelease: false
+        release_name: "${{ steps.version.outputs.version }}"
+        tag_name: "${{ steps.version.outputs.version }}"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Pack testnet configs
+      run: cd dist && tar cfz testnet-all.tar.gz *
+
+    - name: Upload full config artifact
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/testnet-all.tar.gz
+        asset_name: testnet-all.tar.gz
+        asset_content_type: application/gzip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+    - name: Upload genesis.json artifact
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/genesis.json
+        asset_name: genesis.json
+        asset_content_type: application/json
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Upload besu.json artifact
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/besu.json
+        asset_name: besu.json
+        asset_content_type: application/json
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Upload chainspec.json artifact
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/chainspec.json
+        asset_name: chainspec.json
+        asset_content_type: application/json
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+    - name: Upload config.yaml artifact
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/config.yaml
+        asset_name: config.yaml
+        asset_content_type: application/yaml
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Upload genesis.ssz artifact
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/genesis.ssz
+        asset_name: genesis.ssz
+        asset_content_type: application/octet-stream
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+  prepare_rollback:
+    name: Prepare master branch for next rollback
+    needs: build_release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Update values.env for next round
+      run: bash ./scripts/prepare-rollback.sh
+
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Prepare values.env for next rollback
+        branch: master
+        push_options: '--force'
+        skip_checkout: true
+    
