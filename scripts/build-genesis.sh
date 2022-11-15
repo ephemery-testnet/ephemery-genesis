@@ -76,6 +76,7 @@ gen_all_config(){
     setup_apps
     echo 'export GENESIS_TIMESTAMP="'"${GENESIS_TIMESTAMP}"'"' > ./dist/retention.vars
     echo 'export GENESIS_RESET_INTERVAL="'"${GENESIS_INTERVAL}"'"' >> ./dist/retention.vars
+    echo 'export CHAIN_ID="'"${CHAIN_ID}"'"' >> ./dist/retention.vars
     gen_el_config
     gen_cl_config
 
