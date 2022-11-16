@@ -32,6 +32,7 @@ cat ./cl-bootnodes.txt | while read line ; do
         ./apps/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[1]} ${bootnode_data[0]} &
         sleep 2
         killall lighthouse
+        sleep 2
 
         if ! [ -f $tmp_dir/beacon/network/enr.dat ]; then
           echo "couldn't generate enr bootnode for ${bootnode_data[0]}:${bootnode_data[1]}"
@@ -40,6 +41,7 @@ cat ./cl-bootnodes.txt | while read line ; do
           echo "$bootnode_enr" >> ./dist/bootstrap_nodes.txt
           echo "- $bootnode_enr" >> ./dist/boot_enr.txt
 
+          echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[2]}.enr
           openssl rsautl -encrypt -inkey ./bootnode-keys/$bootnode_pubkey -pubin -in $tmp_dir/beacon/network/key -out ./dist/bootnode-keys/${bootnode_data[2]}.key.enc
         fi
     fi

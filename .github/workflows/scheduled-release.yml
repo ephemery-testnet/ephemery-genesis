@@ -41,10 +41,10 @@ jobs:
         python-version: 3.8
 
     - name: Build testnet configs
-      env:
-        BOOTNODE_PK: ${{ env.BOOTNODE_SECRET_PK }}
       run: bash ./scripts/build-genesis.sh
-      
+
+    - name: Build bootnode enr
+      run: bash ./scripts/build-boot-enr.sh
 
     - name: Get CHAIN_ID as version
       run: |
