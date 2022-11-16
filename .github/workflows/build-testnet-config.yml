@@ -21,8 +21,6 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: 3.8
-    - name: Set up latest version of stable Rust
-      run: rustup update stable
 
     - name: Build testnet configs
       run: bash ./scripts/build-genesis.sh

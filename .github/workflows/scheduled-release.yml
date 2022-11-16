@@ -39,21 +39,18 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: 3.8
-    - name: Set up latest version of stable Rust
-      run: rustup update stable
 
     - name: Build testnet configs
       env:
         BOOTNODE_PK: ${{ env.BOOTNODE_SECRET_PK }}
       run: bash ./scripts/build-genesis.sh
+      
 
     - name: Get CHAIN_ID as version
       run: |
         echo "version=$(cat values.env | grep 'CHAIN_ID' | sed 's/.*CHAIN_ID=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
         echo "genesis_time=$(cat values.env | grep 'GENESIS_TIMESTAMP' | sed 's/.*GENESIS_TIMESTAMP=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
       id: version
-
-    
 
     - name: Create draft release
       uses: actions/create-release@v1
