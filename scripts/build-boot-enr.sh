@@ -49,5 +49,6 @@ done
 
 source ./values.env
 echo 'CHAIN_ID="'"$CHAIN_ID"'"' >> ./dist/nodevars_env.txt
-echo 'BOOTNODE_ENR="'"$(cat ./dist/bootstrap_nodes.txt | sed -E '/^$/d' | tr '\n' ',' | sed 's/,$//')"'"' >> ./dist/nodevars_env.txt
+echo 'BOOTNODE_ENR="'"$(cat ./dist/bootstrap_nodes.txt | sed -E '/^$/d' | head -n1)"'"' >> ./dist/nodevars_env.txt
+echo 'BOOTNODE_ENR_LIST="'"$(cat ./dist/bootstrap_nodes.txt | sed -E '/^$/d' | tr '\n' ',' | sed 's/,$//')"'"' >> ./dist/nodevars_env.txt
 
