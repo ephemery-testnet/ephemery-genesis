@@ -47,3 +47,7 @@ cat ./cl-bootnodes.txt | while read line ; do
     fi
 done
 
+source ./values.env
+echo 'CHAIN_ID="'"$CHAIN_ID"'"' >> ./dist/nodevars_env.txt
+echo 'BOOTNODE_ENR="'"$(cat ./dist/bootstrap_nodes.txt | tr '\n' ',')"'"' >> ./dist/nodevars_env.txt
+
