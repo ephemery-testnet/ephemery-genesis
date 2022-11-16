@@ -27,6 +27,9 @@ jobs:
     - name: Build testnet configs
       run: bash ./scripts/build-genesis.sh
 
+    - name: Build bootnode enr
+      run: bash ./scripts/build-boot-enr.sh
+
     - name: Pack testnet configs
       run: cd dist && tar cfz testnet-all.tar.gz *
 

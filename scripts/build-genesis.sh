@@ -20,13 +20,6 @@ setup_apps(){
         cd ..
     fi
 
-    if ! [ -d "./enr-cli" ]; then
-        git clone https://github.com/AgeManning/enr-cli.git
-        cd enr-cli
-        cargo install enr-cli
-        cd ..
-    fi
-
     cd ..
 }
 
@@ -72,26 +65,7 @@ gen_cl_config(){
         --eth1-config ./dist/genesis.json \
         --tranches-dir ./dist/tranches \
         --state-output ./dist/genesis.ssz
-
-        # generate bootnode enr
         
-        set +x
-        cat ./cl-bootnodes.txt | while read line ; do
-            bootnode_data=($(echo $line | tr ":" " "))
-            echo "${bootnode_data[2]}"
-            bootnode_secret=$(eval "echo \$${bootnode_data[2]}")
-            if ! [ $bootnode_secret = "" ]; then
-                
-                bootnode_enr=$(enr-cli build -i ${bootnode_data[0]} -u ${bootnode_data[1]} -k "${bootnode_secret}" | grep "Built ENR:" | sed "s/^Built ENR: //")
-                
-                echo "boot enr: $bootnode_enr"
-                echo $bootnode_enr >> ./dist/bootstrap_nodes.txt
-                echo "- $bootnode_enr" >> ./dist/boot_enr.txt
-            fi
-        done
-        set -x
-        
-
     else
         echo "cl genesis already exists. skipping generation..."
     fi
