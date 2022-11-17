@@ -1,2 +1,3 @@
-136.243.30.12:9001:bootnode_pk
-135.181.140.168:9040:bootnode_pk2
+enr:-Iq4QGdecZrX_n9aWd0T0r3w9aVTnjbrO9nyDSMunKwxh6M3fkTuDamFtcu4Ulgq82WA7V10XJJJgDFUqrYEGAonNGiGAYSHF-YRgmlkgnY0gmlwhIjzHgyJc2VjcDI1NmsxoQJDyix-IHa_mVwLBEN9NeG8I-RUjNQK_MGxk9OqRQUAtIN1ZHCCIyg
+lighthouse:bootnode_pk2:135.181.140.168:9040
+lh_bootnode:bootnode_pk:136.243.30.12:9001

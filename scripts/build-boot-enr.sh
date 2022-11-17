@@ -23,27 +23,43 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 mkdir -p $tmp_dir
 mkdir -p ./dist/bootnode-keys
 
+add_bootnode_enr() {
+  echo "$1" >> ./dist/bootstrap_nodes.txt
+  echo "- $1" >> ./dist/boot_enr.txt
+}
+
+add_bootnode_key() {
+  bootnode_name="$1"
+  bootnode_keyfile="$2"
+  bootnode_pubkey="${bootnode_name}.pub"
+  if [ -f ./bootnode-keys/$bootnode_pubkey ]; then
+    openssl rsautl -encrypt -inkey ./bootnode-keys/$bootnode_pubkey -pubin -in $bootnode_keyfile -out ./dist/bootnode-keys/${bootnode_name}.key.enc
+  fi
+}
+
 cat ./cl-bootnodes.txt | while read line ; do
     bootnode_data=($(echo $line | tr ":" " "))
-    bootnode_pubkey="${bootnode_data[2]}.pub"
-    if [ -f ./bootnode-keys/$bootnode_pubkey ]; then
-        rm -rf $tmp_dir/*
-
-        ./apps/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[1]} ${bootnode_data[0]} &
-        sleep 2
-        killall lighthouse
-        sleep 2
-
-        if ! [ -f $tmp_dir/beacon/network/enr.dat ]; then
-          echo "couldn't generate enr bootnode for ${bootnode_data[0]}:${bootnode_data[1]}"
-        else
-          bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
-          echo "$bootnode_enr" >> ./dist/bootstrap_nodes.txt
-          echo "- $bootnode_enr" >> ./dist/boot_enr.txt
-
-          echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[2]}.enr
-          openssl rsautl -encrypt -inkey ./bootnode-keys/$bootnode_pubkey -pubin -in $tmp_dir/beacon/network/key -out ./dist/bootnode-keys/${bootnode_data[2]}.key.enc
-        fi
+    if [ $bootnode_data[0] = "enr" ]; then
+      # generic ENR
+      add_bootnode_enr $line
+    elif [ $bootnode_data[0] = "lh_bootnode" ]
+      ./apps/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} ${bootnode_data[2]} &
+      sleep 2
+      killall lighthouse
+      sleep 2
+      bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
+      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_name}.enr
+      add_bootnode_key $bootnode_data[1] $tmp_dir/beacon/network/key
+      add_bootnode_enr $bootnode_enr
+    elif [ $bootnode_data[0] = "lighthouse" ]
+      ./apps/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
+      sleep 5
+      killall lighthouse
+      sleep 2
+      bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
+      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_name}.enr
+      add_bootnode_key $bootnode_data[1] $tmp_dir/beacon/network/key
+      add_bootnode_enr $bootnode_enr
     fi
 done
 
