@@ -42,7 +42,7 @@ cat ./cl-bootnodes.txt | while read line ; do
     if [ $bootnode_data[0] = "enr" ]; then
       # generic ENR
       add_bootnode_enr $line
-    elif [ $bootnode_data[0] = "lh_bootnode" ]
+    elif [ $bootnode_data[0] = "lh_bootnode" ]; then
       ./apps/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} ${bootnode_data[2]} &
       sleep 2
       killall lighthouse
@@ -51,7 +51,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_name}.enr
       add_bootnode_key $bootnode_data[1] $tmp_dir/beacon/network/key
       add_bootnode_enr $bootnode_enr
-    elif [ $bootnode_data[0] = "lighthouse" ]
+    elif [ $bootnode_data[0] = "lighthouse" ]; then
       ./apps/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
       sleep 5
       killall lighthouse
