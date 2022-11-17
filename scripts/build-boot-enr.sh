@@ -54,8 +54,8 @@ cat ./cl-bootnodes.txt | while read line ; do
       add_bootnode_enr $bootnode_enr
     elif [ ${bootnode_data[0]} = "lighthouse" ]; then
       rm -rf $tmp_dir/*
-      ./apps/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
-      sleep 5
+      ./apps/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
+      sleep 10
       killall lighthouse
       sleep 2
       bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
