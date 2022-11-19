@@ -6,18 +6,6 @@ setup_apps(){
     set -x
     cd ./apps
 
-    go install github.com/protolambda/eth2-val-tools@latest
-
-    env
-    which eth2-val-tools
-
-    if ! [ -d "./eth2-testnet-genesis" ]; then
-        git clone https://github.com/pk910/eth2-testnet-genesis.git
-        cd eth2-testnet-genesis
-        go install .
-        cd ..
-    fi
-
     if [ -d "./el-gen" ]; then
         cd el-gen
         pip3 install -r requirements.txt

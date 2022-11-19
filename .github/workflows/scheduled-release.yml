@@ -40,6 +40,16 @@ jobs:
       with:
         python-version: 3.8
 
+    - name: Get cached go apps
+      id: cached-go-apps
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/go/bin
+        key: ${{ runner.os }}-go-apps
+    - name: Build go apps
+      if: steps.cached-go-apps.outputs.cache-hit != 'true'
+      run: bash ./scripts/build-go-apps.sh
+
     - name: Build testnet configs
       run: bash ./scripts/build-genesis.sh
 
