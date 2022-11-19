@@ -28,6 +28,9 @@ jobs:
     - name: Build bootnode enr
       run: bash ./scripts/build-boot-enr.sh
 
+    - name: Build nodevars.env
+      run: bash ./scripts/build-nodevars.sh
+
     - name: Pack testnet configs
       run: cd dist && tar cfz testnet-all.tar.gz *
 

@@ -46,6 +46,9 @@ jobs:
     - name: Build bootnode enr
       run: bash ./scripts/build-boot-enr.sh
 
+    - name: Build nodevars.env
+      run: bash ./scripts/build-nodevars.sh
+
     - name: Get CHAIN_ID as version
       run: |
         echo "version=$(cat values.env | grep 'CHAIN_ID' | sed 's/.*CHAIN_ID=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT

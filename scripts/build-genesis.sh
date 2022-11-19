@@ -32,6 +32,7 @@ gen_el_config(){
         python3 ./apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml      > ./dist/genesis.json
         python3 ./apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml > ./dist/chainspec.json
         python3 ./apps/el-gen/genesis_besu.py $tmp_dir/genesis-config.yaml > ./dist/besu.json
+        cp ./el-bootnodes.txt ./dist/boot_enode.txt
     else
         echo "el genesis already exists. skipping generation..."
     fi
