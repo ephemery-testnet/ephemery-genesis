@@ -49,7 +49,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       killall lighthouse
       sleep 2
       bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
-      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_name}.enr
+      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
       add_bootnode_key ${bootnode_data[1]} $tmp_dir/beacon/network/key
       add_bootnode_enr $bootnode_enr
     elif [ ${bootnode_data[0]} = "lighthouse" ]; then
@@ -59,7 +59,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       killall lighthouse
       sleep 2
       bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
-      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_name}.enr
+      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
       add_bootnode_key ${bootnode_data[1]} $tmp_dir/beacon/network/key
       add_bootnode_enr $bootnode_enr
     fi
