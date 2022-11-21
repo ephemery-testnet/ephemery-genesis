@@ -49,20 +49,29 @@ jobs:
     - name: Build nodevars.env
       run: bash ./scripts/build-nodevars.sh
 
-    - name: Get CHAIN_ID as version
+    - name: Get ITERATION_NUMBER as version
       run: |
-        echo "version=$(cat values.env | grep 'CHAIN_ID' | sed 's/.*CHAIN_ID=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
+        echo "iteration=$(cat values.env | grep 'ITERATION_NUMBER' | sed 's/.*ITERATION_NUMBER=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
+        echo "release=$(cat ./dist/retention.vars | grep 'ITERATION_RELEASE' | sed 's/.*ITERATION_RELEASE=\"\([^"]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
         echo "genesis_time=$(cat values.env | grep 'GENESIS_TIMESTAMP' | sed 's/.*GENESIS_TIMESTAMP=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
+        echo "chainid=$(cat values.env | grep 'CHAIN_ID' | sed 's/.*CHAIN_ID=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
+        echo "reset_time=$(cat values.env | grep 'GENESIS_INTERVAL' | sed 's/.*GENESIS_INTERVAL=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
       id: version
 
-    - name: Create draft release
+    - name: Create release
       uses: actions/create-release@v1
       id: create_release
       with:
         draft: false
         prerelease: false
-        release_name: "${{ steps.version.outputs.version }}"
-        tag_name: "${{ steps.version.outputs.version }}"
+        release_name: "${{ steps.version.outputs.release }}"
+        tag_name: "${{ steps.version.outputs.release }}"
+        body: |
+          # Ephemery-${{ steps.version.outputs.iteration }} Genesis
+          
+          ChainId: ${{ steps.version.outputs.chainid }}
+          Genesis Time: ${{ steps.version.outputs.genesis_time }}
+          Reset Interval: ${{ steps.version.outputs.reset_time }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
