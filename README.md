@@ -16,7 +16,7 @@ You can use a command like this one to generate a 200 validators file:
 
 ```
 export MNEMONIC="your mnemonic"
-eth2-val-tools deposit-data --fork-version 0x10001008 --source-max 199 --source-min 0 --validators-mnemonic="$MNEMONIC" --withdrawals-mnemonic="$MNEMONIC" --as-json-list | jq ".[] | \"0x\" + .pubkey + \":\" + .withdrawal_credentials + \":32000000000\"" | tr -d '"' > name-node1.txt
+eth2-val-tools deposit-data --fork-version 0x10001008 --source-max 200 --source-min 0 --validators-mnemonic="$MNEMONIC" --withdrawals-mnemonic="$MNEMONIC" --as-json-list | jq ".[] | \"0x\" + .pubkey + \":\" + .withdrawal_credentials + \":32000000000\"" | tr -d '"' > name-node1.txt
 ```
 
 They will be added to the genesis state on next reset.
