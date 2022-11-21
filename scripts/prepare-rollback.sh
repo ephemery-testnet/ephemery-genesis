@@ -3,6 +3,7 @@
 tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 source ./values.env
 
+next_iteration_number=$(expr $ITERATION_NUMBER + 1)
 next_chainid=$(expr $CHAIN_ID + 1)
 next_genesis_time=$(expr $GENESIS_TIMESTAMP + $GENESIS_INTERVAL)
 
@@ -10,6 +11,7 @@ echo "New CHAIN_ID: $next_chainid"
 echo "New GENESIS_TIMESTAMP: $next_genesis_time"
 
 cat ./values.env | while read line ; do
+  line=`echo $line | sed 's/ ITERATION_NUMBER=".*"/ ITERATION_NUMBER="'"$next_iteration_number"'"/'`
   line=`echo $line | sed 's/ CHAIN_ID=".*"/ CHAIN_ID="'"$next_chainid"'"/'`
   line=`echo $line | sed 's/ GENESIS_TIMESTAMP=".*"/ GENESIS_TIMESTAMP="'"$next_genesis_time"'"/'`
    
