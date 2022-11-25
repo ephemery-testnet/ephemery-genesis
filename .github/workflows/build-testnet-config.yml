@@ -46,16 +46,6 @@ jobs:
       with:
         path: ./dist/genesis.json
         name: genesis.json
-    - name: Upload besu.json artifact
-      uses: actions/upload-artifact@v3
-      with:
-        path: ./dist/besu.json
-        name: besu.json
-    - name: Upload chainspec.json artifact
-      uses: actions/upload-artifact@v3
-      with:
-        path: ./dist/chainspec.json
-        name: chainspec.json
     
     - name: Upload config.yaml artifact
       uses: actions/upload-artifact@v3

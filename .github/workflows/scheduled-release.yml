@@ -72,6 +72,13 @@ jobs:
           ChainId: ${{ steps.version.outputs.chainid }}
           Genesis Time: ${{ steps.version.outputs.genesis_time }} (${{ steps.version.outputs.genesis_date }})
           Reset Interval: ${{ steps.version.outputs.reset_time }}
+
+          | Release File  | Description |
+          | ------------- | ------------- |
+          | genesis.json | Execution Layer Genesis |
+          | config.yaml | Consensus Layer Config  |
+          | genesis.ssz | Consensus Layer Genesis |
+          | testnet-all.tar.gz | Full testnet configuration (`testnet` directory) |
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
@@ -97,25 +104,7 @@ jobs:
         asset_content_type: application/json
       env:
         GITHUB_TOKEN: ${{ github.token }}
-    - name: Upload besu.json artifact
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/besu.json
-        asset_name: besu.json
-        asset_content_type: application/json
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-    - name: Upload chainspec.json artifact
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/chainspec.json
-        asset_name: chainspec.json
-        asset_content_type: application/json
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-    
+
     - name: Upload config.yaml artifact
       uses: actions/upload-release-asset@v1
       with:
