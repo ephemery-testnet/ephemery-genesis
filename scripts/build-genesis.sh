@@ -9,6 +9,7 @@ setup_apps(){
     if ! [ -d "./eth2-testnet-genesis" ]; then
         git clone https://github.com/pk910/eth2-testnet-genesis.git
         cd eth2-testnet-genesis
+        git checkout trustless-genesis-validators
         go install .
         go install github.com/protolambda/eth2-val-tools@latest
         cd ..
@@ -62,7 +63,7 @@ gen_cl_config(){
         # Generate genesis
         eth2-testnet-genesis merge \
         --config ./dist/config.yaml \
-        --mnemonics $tmp_dir/validators.txt \
+        --validators $tmp_dir/validators.txt \
         --eth1-config ./dist/genesis.json \
         --tranches-dir ./dist/tranches \
         --state-output ./dist/genesis.ssz
