@@ -57,8 +57,14 @@ gen_cl_config(){
         echo $DEPOSIT_CONTRACT_BLOCK > ./dist/deploy_block.txt
         echo $CL_EXEC_BLOCK > ./dist/deposit_contract_block.txt
 
+        # Create a dummy validator with iteration number in pubkey (required to get a unique forkdigest for each genesis iteration)
+        dummypubkey="80$(echo $ITERATION_NUMBER | awk '{printf("%094x\n", $1)}')"
+        echo "0x$dummypubkey:0x0100000000000000000000000000000000000000000000000000000000000000:32000000000" > $tmp_dir/validators.txt
+        
         # collect validators
-        cat ./validators/*.txt | sed 's/#.*$//g' > $tmp_dir/validators.txt
+        cat ./validators/*.txt | sed 's/#.*$//g' >> $tmp_dir/validators.txt
+
+        cat $tmp_dir/validators.txt
 
         # Generate genesis
         eth2-testnet-genesis merge \
