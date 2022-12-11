@@ -30,5 +30,6 @@ el_premine_addrs: {
   # faucets
   "0xc90E920F4DCfd4954230edCaB168D0C5B9561e03": 10000000ETH, # re-funding previous validators (pk910)
   "0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455": 10000000ETH, # PoWFaucet: https://ephemery-faucet.pk910.de
+  "0x992775d32fd0ec76b95C5E76CeEA92ED5a4bE1F9": 10000000ETH, # https://faucet.bordel.wtf/
 }
 genesis_timestamp: ${GENESIS_TIMESTAMP}
