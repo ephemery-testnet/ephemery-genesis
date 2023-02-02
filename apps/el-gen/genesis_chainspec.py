@@ -14,7 +14,9 @@ with open(testnet_config_path) as stream:
 
 out = {
     "name": "Testnet",
-    "engine": {},
+    "engine": {
+        "Ethash": {}
+    },
     "params": {
         "gasLimitBoundDivisor": "0x400",
         "registrar": "0x0000000000000000000000000000000000000000",
@@ -50,7 +52,12 @@ out = {
         "eip1559Transition": "0x0",
         "eip3198Transition": "0x0",
         "eip3529Transition": "0x0",
-        "eip3541Transition": "0x0"
+        "eip3541Transition": "0x0",
+        "eip4895TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip3855TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip3651TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip3860TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "terminalTotalDifficulty": "0x0"
     },
     "genesis": {
         "seal": {
