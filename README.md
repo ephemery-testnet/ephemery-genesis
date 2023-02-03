@@ -1,6 +1,6 @@
 # Test ephemeral testnet
 
-This repository contains the genesis configuration for the test ephemeral testnet.
+This repository contains the genesis configuration for the [test ephemeral testnet](https://github.com/taxmeifyoucan/ephemeral-testnet).
 
 ## Run clients
 
