@@ -1,8 +1,0 @@
-py-ecc==5.2.0
-milagro-bls-binding==1.6.3
-dataclasses==0.6
-lru-dict==1.1.6
-marko==1.0.2
-ruamel.yaml==0.16.5
-remerkleable==0.1.24
-pycryptodome==3.9.4
