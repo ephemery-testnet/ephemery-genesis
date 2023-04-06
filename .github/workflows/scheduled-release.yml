@@ -23,6 +23,12 @@ jobs:
         echo "can_release=$(bash ./scripts/check_can_release.sh | tr -d '\n')" >> $GITHUB_OUTPUT
       id: can_release
 
+    - name: Cancel workflow if nothing to do
+      uses: styfle/cancel-workflow-action
+      if: steps.can_release.outputs.can_release != 'true'
+      with:
+        workflow_id: ${{ github.event.workflow.id }}
+
   build_release:
     name: Build Release Config
     needs: [check_genesis]
