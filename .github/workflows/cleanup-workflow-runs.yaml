@@ -1,0 +1,30 @@
+
+name: Cleanup workflow runs
+
+on:
+  schedule:
+  - cron: "35 3 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  cleanup_workflow_runs:
+    name: Cleanup workflow runs
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          workflowid=$(gh api repos/$GITHUB_REPOSITORY/actions/workflows | jq -r '.workflows[] | select(.path == ".github/workflows/scheduled-release.yml") |(.id)' | tr -d '\n')
+
+          for i in 5 4 3 2 1
+          do
+            gh api repos/$GITHUB_REPOSITORY/actions/workflows/$workflowid/runs\?page=$i\&per_page=75 | jq -r '.workflow_runs[] | select(.conclusion == "cancelled" or .conclusion == "skipped") | "\(.id)"' | \
+            while read runid ; do 
+              echo "Delete workflow run $runid"
+              gh api repos/$GITHUB_REPOSITORY/actions/runs/$runid -X DELETE --silent
+            done
+          done
+          gh api repos/$GITHUB_REPOSITORY/actions/runs\?page=1\&per_page=75 \
+            |  jq -r '.workflow_runs[] | "\(.id)\t\(.name)\t\(.status)\t\(.event)\t\(.head_sha)"'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
