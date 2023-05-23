@@ -27,7 +27,7 @@ out = {
         "londonBlock":0,
         "mergeForkBlock":0,
         "terminalTotalDifficulty":0,
-        "shanghaiTime": int(data['genesis_timestamp']) + 300 + (5 * 12 * 32) # genesis_time + genesis_delay + 5 epochs
+        "shanghaiTime": int(data['genesis_timestamp'])
     },
     "alloc": {
         # Allocate 1 wei to all possible pre-compiles.
