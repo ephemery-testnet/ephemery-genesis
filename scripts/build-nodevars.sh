@@ -8,7 +8,7 @@ source ./values.env
 tmp_dir=$(mktemp -d -t gd-XXXXXXXXXX)
 
 cd apps/genesis-details
-npm install @chainsafe/lodestar-types
+npm install @lodestar/types
 node ./get-genesis-details.js ../../dist/genesis.ssz > $tmp_dir/details.txt
 cd ../..
 

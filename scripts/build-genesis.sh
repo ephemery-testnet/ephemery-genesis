@@ -65,7 +65,7 @@ gen_cl_config(){
         cat ./validators/*.txt | sed 's/#.*$//g' >> $tmp_dir/validators.txt
 
         # Generate genesis
-        eth2-testnet-genesis merge \
+        eth2-testnet-genesis capella \
         --config ./dist/config.yaml \
         --validators $tmp_dir/validators.txt \
         --eth1-config ./dist/genesis.json \

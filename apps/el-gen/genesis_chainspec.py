@@ -53,10 +53,10 @@ out = {
         "eip3198Transition": "0x0",
         "eip3529Transition": "0x0",
         "eip3541Transition": "0x0",
-        "eip4895TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
-        "eip3855TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
-        "eip3651TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
-        "eip3860TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip4895TransitionTimestamp": hex(int(data['genesis_timestamp'])),
+        "eip3855TransitionTimestamp": hex(int(data['genesis_timestamp'])),
+        "eip3651TransitionTimestamp": hex(int(data['genesis_timestamp'])),
+        "eip3860TransitionTimestamp": hex(int(data['genesis_timestamp'])),
         "terminalTotalDifficulty": "0x0"
     },
     "genesis": {
