@@ -27,6 +27,7 @@ out = {
         "londonBlock":0,
         "mergeForkBlock":0,
         "terminalTotalDifficulty":0,
+        "terminalTotalDifficultyPassed": bool(True),
         "shanghaiTime": int(data['genesis_timestamp'])
     },
     "alloc": {
