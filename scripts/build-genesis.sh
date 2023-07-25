@@ -67,7 +67,7 @@ gen_cl_config(){
         # Generate genesis
         eth2-testnet-genesis capella \
         --config ./dist/config.yaml \
-        --validators $tmp_dir/validators.txt \
+        --additional-validators $tmp_dir/validators.txt \
         --eth1-config ./dist/genesis.json \
         --tranches-dir ./dist/tranches \
         --state-output ./dist/genesis.ssz
