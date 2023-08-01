@@ -7,9 +7,8 @@ setup_apps(){
     cd ./apps
 
     if ! [ -d "./eth2-testnet-genesis" ]; then
-        git clone https://github.com/pk910/eth2-testnet-genesis.git
+        git clone https://github.com/protolambda/eth2-testnet-genesis.git
         cd eth2-testnet-genesis
-        git checkout trustless-genesis-validators
         go install .
         go install github.com/protolambda/eth2-val-tools@latest
         cd ..
