@@ -59,6 +59,9 @@ jobs:
     - name: Build nodevars.env
       run: bash ./scripts/build-nodevars.sh
 
+    - name: Check all generated configs
+      run: bash ./scripts/check-genesis.sh
+
     - name: Get ITERATION_NUMBER as version
       run: |
         echo "iteration=$(cat values.env | grep 'ITERATION_NUMBER' | sed 's/.*ITERATION_NUMBER=\"\([0-9]*\)\"/\1/g' | tr -d '\n')" >> $GITHUB_OUTPUT
