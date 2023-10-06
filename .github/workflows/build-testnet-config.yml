@@ -35,6 +35,9 @@ jobs:
     - name: Build nodevars.env
       run: bash ./scripts/build-nodevars.sh
 
+    - name: Check all generated configs
+      run: bash ./scripts/check-genesis.sh
+
     - name: Pack testnet configs
       run: cd dist && tar cfz testnet-all.tar.gz *
 
