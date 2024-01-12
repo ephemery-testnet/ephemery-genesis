@@ -28,7 +28,8 @@ out = {
         "mergeForkBlock":0,
         "terminalTotalDifficulty":0,
         "terminalTotalDifficultyPassed": bool(True),
-        "shanghaiTime": int(data['genesis_timestamp'])
+        "shanghaiTime": int(data['genesis_timestamp']),
+        "cancunTime": int(data['genesis_timestamp']) + 300 + (5 * 12 * 32) # genesis_time + genesis_delay + 5 epochs
     },
     "alloc": {
         # Allocate 1 wei to all possible pre-compiles.
