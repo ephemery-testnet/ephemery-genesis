@@ -57,6 +57,12 @@ out = {
         "eip3855TransitionTimestamp": hex(int(data['genesis_timestamp'])),
         "eip3651TransitionTimestamp": hex(int(data['genesis_timestamp'])),
         "eip3860TransitionTimestamp": hex(int(data['genesis_timestamp'])),
+        "eip1153TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip4844TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip4788TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip5656TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip6780TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
+        "eip7516TransitionTimestamp": hex(int(data['genesis_timestamp']) + 300 + (5 * 12 * 32)), # genesis_time + genesis_delay + 5 epochs
         "terminalTotalDifficulty": "0x0"
     },
     "genesis": {

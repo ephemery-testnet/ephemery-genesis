@@ -33,7 +33,7 @@ CAPELLA_FORK_VERSION: $CAPELLA_FORK_VERSION
 CAPELLA_FORK_EPOCH: 0
 # Deneb
 DENEB_FORK_VERSION: $DENEB_FORK_VERSION
-DENEB_FORK_EPOCH: 18446744073709551615
+DENEB_FORK_EPOCH: 5
 
 # Time parameters
 # ---------------------------------------------------------------
