@@ -22,3 +22,5 @@ echo 'BOOTNODE_ENODE="'"$(cat ./el-bootnodes.txt | sed -E '/^$/d' | head -n1)"'"
 echo 'BOOTNODE_ENODE_LIST="'"$(cat ./el-bootnodes.txt | sed -E '/^$/d' | tr '\n' ',' | sed 's/,$//')"'"' >> ./dist/nodevars_env.txt
 echo 'GENESIS_TIME="'"$(cat $tmp_dir/details.txt | grep "genesisTime" | sed 's/.*: \(.*\)/\1/')"'"' >> ./dist/nodevars_env.txt
 echo 'GENESIS_VALROOT="'"$(cat $tmp_dir/details.txt | grep "genesisValidatorsRoot" | sed 's/.*: \(.*\)/\1/')"'"' >> ./dist/nodevars_env.txt
+
+cat $tmp_dir/details.txt | grep "genesisValidatorsRoot" | sed 's/.*: \(.*\)/\1/' > ./dist/genesis_validators_root.txt
