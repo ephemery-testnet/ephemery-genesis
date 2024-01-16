@@ -57,7 +57,7 @@ gen_cl_config(){
         # Create deposit_contract.txt and deploy_block.txt
         grep DEPOSIT_CONTRACT_ADDRESS ./dist/config.yaml | cut -d " " -f2 > ./dist/deposit_contract.txt
         echo $DEPOSIT_CONTRACT_BLOCK > ./dist/deploy_block.txt
-        echo $CL_EXEC_BLOCK > ./dist/deposit_contract_block.txt
+        echo $DEPOSIT_CONTRACT_BLOCK > ./dist/deposit_contract_block.txt
 
         # Create a dummy validator with iteration number in pubkey (required to get a unique forkdigest for each genesis iteration)
         dummyaddr=$(echo $ITERATION_NUMBER | awk '{printf("%040x\n", $1)}')
