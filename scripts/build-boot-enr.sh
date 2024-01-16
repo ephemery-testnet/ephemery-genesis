@@ -65,3 +65,4 @@ cat ./cl-bootnodes.txt | while read line ; do
     fi
 done
 
+cp ./dist/boot_enr.txt ./dist/boot_enr.yaml

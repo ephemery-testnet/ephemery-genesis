@@ -10,7 +10,6 @@ setup_apps(){
         git clone https://github.com/protolambda/eth2-testnet-genesis.git
         cd eth2-testnet-genesis
         go install .
-        go install github.com/protolambda/eth2-val-tools@latest
         cd ..
     fi
 
@@ -19,6 +18,9 @@ setup_apps(){
         pip3 install -r requirements.txt
         cd ..
     fi
+
+    go install github.com/protolambda/eth2-val-tools@latest
+    go install github.com/protolambda/zcli@latest
 
     cd ..
 }
@@ -33,6 +35,7 @@ gen_el_config(){
         python3 ./apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml > ./dist/chainspec.json
         python3 ./apps/el-gen/genesis_besu.py $tmp_dir/genesis-config.yaml > ./dist/besu.json
         cp ./el-bootnodes.txt ./dist/boot_enode.txt
+        cp ./el-bootnodes.txt ./dist/bootnode.txt
     else
         echo "el genesis already exists. skipping generation..."
     fi
