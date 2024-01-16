@@ -44,7 +44,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       add_bootnode_enr $line
     elif [ ${bootnode_data[0]} = "lh_bootnode" ]; then
       rm -rf $tmp_dir/*
-      ./apps/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} ${bootnode_data[2]} &
+      ./apps/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
       sleep 2
       killall lighthouse
       sleep 2
@@ -65,3 +65,4 @@ cat ./cl-bootnodes.txt | while read line ; do
     fi
 done
 
+cp ./dist/boot_enr.txt ./dist/boot_enr.yaml
