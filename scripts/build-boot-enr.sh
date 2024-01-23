@@ -7,9 +7,9 @@ get_github_release() {
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
 
-if ! [ -d ./apps/lighthouse ]; then
-  mkdir ./apps/lighthouse
-  cd ./apps/lighthouse
+if ! [ -d ./temp/lighthouse ]; then
+  mkdir -p ./temp/lighthouse
+  cd ./temp/lighthouse
 
   lighthouse_release=$(get_github_release sigp/lighthouse)
   wget "https://github.com/sigp/lighthouse/releases/download/$lighthouse_release/lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu-portable.tar.gz"
@@ -44,7 +44,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       add_bootnode_enr $line
     elif [ ${bootnode_data[0]} = "lh_bootnode" ]; then
       rm -rf $tmp_dir/*
-      ./apps/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
+      ./temp/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
       sleep 2
       killall lighthouse
       sleep 2
@@ -54,7 +54,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       add_bootnode_enr $bootnode_enr
     elif [ ${bootnode_data[0]} = "lighthouse" ]; then
       rm -rf $tmp_dir/*
-      ./apps/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
+      ./temp/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
       sleep 10
       killall lighthouse
       sleep 2
