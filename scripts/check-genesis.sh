@@ -24,6 +24,8 @@ check_genesis(){
     check_file config.yaml
     check_file genesis.ssz
     check_file boot_enode.txt
+    check_file boot_enr.txt
+    check_file bootstrap_nodes.txt
     check_file deploy_block.txt
     check_file deposit_contract_block.txt
     check_file deposit_contract.txt
