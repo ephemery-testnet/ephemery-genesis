@@ -23,7 +23,11 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 mkdir -p $tmp_dir
 mkdir -p ./dist/bootnode-keys
 
+echo "" > ./dist/bootstrap_nodes.txt
+echo "" > ./dist/boot_enr.txt
+
 add_bootnode_enr() {
+  echo "add enr: $1"
   echo "$1" >> ./dist/bootstrap_nodes.txt
   echo "- $1" >> ./dist/boot_enr.txt
 }
@@ -49,9 +53,11 @@ cat ./cl-bootnodes.txt | while read line ; do
       killall lighthouse
       sleep 2
       bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
-      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
-      add_bootnode_key ${bootnode_data[1]} $tmp_dir/beacon/network/key
-      add_bootnode_enr $bootnode_enr
+      if [ ! -z "$bootnode_enr" ]; then
+        echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
+        add_bootnode_key ${bootnode_data[1]} $tmp_dir/beacon/network/key
+        add_bootnode_enr $bootnode_enr
+      fi
     elif [ ${bootnode_data[0]} = "lighthouse" ]; then
       rm -rf $tmp_dir/*
       ./temp/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
@@ -59,9 +65,29 @@ cat ./cl-bootnodes.txt | while read line ; do
       killall lighthouse
       sleep 2
       bootnode_enr=$(cat $tmp_dir/beacon/network/enr.dat)
-      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
-      add_bootnode_key ${bootnode_data[1]} $tmp_dir/beacon/network/key
-      add_bootnode_enr $bootnode_enr
+      if [ ! -z "$bootnode_enr" ]; then
+        echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
+        add_bootnode_key ${bootnode_data[1]} $tmp_dir/beacon/network/key
+        add_bootnode_enr $bootnode_enr
+      fi
+    elif [ ${bootnode_data[0]} = "teku" ]; then
+      rm -rf $tmp_dir/*
+      echo -n 0x$(openssl rand -hex 32 | tr -d "\n") > $tmp_dir/jwtsecret
+      docker run -d --restart unless-stopped --name teku-node -u $UID -v ./dist:/testnet:ro -p 5052:5052 -v $tmp_dir:/data consensys/teku:latest \
+        --network=/testnet/config.yaml --initial-state=/testnet/genesis.ssz \
+        --ee-endpoint=http://172.17.0.1:8651 --ee-jwt-secret-file=/data/jwtsecret \
+        --data-path=/data --p2p-enabled=true --p2p-interface=0.0.0.0 --p2p-advertised-ip=${bootnode_data[2]} --p2p-port=${bootnode_data[3]} --p2p-advertised-port=${bootnode_data[3]} \
+        --rest-api-enabled --rest-api-interface=0.0.0.0 --rest-api-host-allowlist=* --rest-api-port=5052 \
+        --Xpeer-rate-limit=100000 --Xpeer-request-limit=1000 --ignore-weak-subjectivity-period-enabled --data-storage-non-canonical-blocks-enabled=true
+      sleep 10
+      bootnode_enr=$(curl -s http://127.0.0.1:5052/eth/v1/node/identity | jq -r .data.enr)
+      docker rm -f teku-node
+      sleep 2
+      if [ ! -z "$bootnode_enr" ]; then
+        echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
+        add_bootnode_key ${bootnode_data[1]} $tmp_dir/beacon/kvstore/generated-node-key.dat
+        add_bootnode_enr $bootnode_enr
+      fi
     fi
 done
 
