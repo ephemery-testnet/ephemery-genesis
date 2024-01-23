@@ -26,9 +26,9 @@ gen_all_config(){
     cat ./validators/*.txt | sed 's/#.*$//g' >> ./temp/input/validators.txt
 
     # run ethereum-genesis-generator
-    docker run --rm -it -u $UID -v $PWD/temp/output:/data \
+    docker run --rm -u $UID -v $PWD/temp/output:/data \
         -v $PWD/temp/input:/config \
-        ethpandaops/ethereum-genesis-generator:latest \
+        pk910/eth-genesis:latest \
         all
 
     # copy config folder structure
