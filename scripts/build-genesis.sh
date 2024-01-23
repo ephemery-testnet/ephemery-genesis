@@ -2,14 +2,14 @@
 source ./values.env
 
 gen_all_config(){
-    if [ -d ./temp ]; then
-        rm -rf ./temp
-    fi
     if [ -d ./dist ]; then
         rm -rf ./dist
     fi
 
     # prepare input configs for ethereum-genesis-generator
+    if [ -d ./temp ]; then
+        rm -rf ./temp
+    fi
     mkdir -p ./temp/output
     mkdir -p ./temp/input/cl
     cp ./cl-config.yaml ./temp/input/cl/config.yaml
@@ -34,6 +34,19 @@ gen_all_config(){
     # copy config folder structure
     cp ./temp/output/custom_config_data -r ./dist
     rm ./dist/mnemonics.yaml
+    rm -rf ./temp
+
+    # build retention vars
+    touch ./dist/retention.vars
+    echo 'export ITERATION_NUMBER="'"${ITERATION_NUMBER}"'"' >> ./dist/retention.vars
+    echo 'export ITERATION_RELEASE="ephemery-'"${ITERATION_NUMBER}"'"' >> ./dist/retention.vars
+    echo 'export GENESIS_TIMESTAMP="'"${GENESIS_TIMESTAMP}"'"' >> ./dist/retention.vars
+    echo 'export GENESIS_RESET_INTERVAL="'"${GENESIS_INTERVAL}"'"' >> ./dist/retention.vars
+    echo 'export CHAIN_ID="'"${CHAIN_ID}"'"' >> ./dist/retention.vars
+
+    # copy el bootnodes
+    cp ./el-bootnodes.txt ./dist/boot_enode.txt
+    cp ./el-bootnodes.txt ./dist/bootnode.txt
 
     ls -lah ./dist
 }

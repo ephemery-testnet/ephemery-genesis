@@ -3,9 +3,6 @@ set -x
 
 source ./values.env
 
-# get genesis details
-zcli pretty capella BeaconState ./dist/genesis.ssz > ./dist/parsedBeaconState.json
-
 echo 'ITERATION_NUMBER="'"$ITERATION_NUMBER"'"' >> ./dist/nodevars_env.txt
 echo 'CHAIN_ID="'"$CHAIN_ID"'"' >> ./dist/nodevars_env.txt
 echo 'BOOTNODE_ENR="'"$(cat ./dist/bootstrap_nodes.txt | sed -E '/^$/d' | head -n1)"'"' >> ./dist/nodevars_env.txt
