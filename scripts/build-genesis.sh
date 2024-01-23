@@ -28,7 +28,7 @@ gen_all_config(){
     # run ethereum-genesis-generator
     docker run --rm -u $UID -v $PWD/temp/output:/data \
         -v $PWD/temp/input:/config \
-        pk910/eth-genesis:latest \
+        ethpandaops/ethereum-genesis-generator:latest \
         all
 
     # copy config folder structure
