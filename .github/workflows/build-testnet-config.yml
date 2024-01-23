@@ -29,6 +29,9 @@ jobs:
     - name: Build testnet configs
       run: bash ./scripts/build-genesis.sh
 
+    - name: Build validator names
+      run: bash ./scripts/build-validator-names.sh
+    
     - name: Build bootnode enr
       run: bash ./scripts/build-boot-enr.sh
 
