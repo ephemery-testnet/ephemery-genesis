@@ -23,9 +23,6 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 mkdir -p $tmp_dir
 mkdir -p ./dist/bootnode-keys
 
-echo "" > ./dist/bootstrap_nodes.txt
-echo "" > ./dist/boot_enr.txt
-
 add_bootnode_enr() {
   echo "add enr: $1"
   echo "$1" >> ./dist/bootstrap_nodes.txt
