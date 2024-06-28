@@ -41,3 +41,5 @@ cp ./dist2/deposit_contract_block.txt ./dist2/deploy_block.txt
 cp ./dist/parsed/parsedConsensusGenesis.json ./dist2/parsedBeaconState.json
 cp ./dist/parsed/validator-names.yaml ./dist2/validator-names.yaml
 cp ./dist/retention.vars ./dist2/retention.vars
+
+cp ./dist/bootnode-keys -r ./dist2/bootnode-keys
