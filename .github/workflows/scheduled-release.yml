@@ -85,20 +85,20 @@ jobs:
           | genesis.json | Execution Layer Genesis |
           | config.yaml | Consensus Layer Config  |
           | genesis.ssz | Consensus Layer Genesis |
-          | ephemery-genesis.tar.gz | All ephemery genesis config files (standardized layout) |
-          | testnet-all.tar.gz | Legacy genesis config structure  (`testnet` directory) |
+          | network-config.tar.gz | Ephemery network config files (standardized testnet layout) |
+          | testnet-all.tar.gz | Legacy genesis config structure (`testnet` directory) |
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
     - name: Pack testnet configs
-      run: cd dist && tar cfz ephemery-genesis.tar.gz *
+      run: cd dist && tar cfz network-config.tar.gz *
 
     - name: Upload full config artifact
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/ephemery-genesis.tar.gz
-        asset_name: ephemery-genesis.tar.gz
+        asset_path: ./dist/network-config.tar.gz
+        asset_name: network-config.tar.gz
         asset_content_type: application/gzip
       env:
         GITHUB_TOKEN: ${{ github.token }}

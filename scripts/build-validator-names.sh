@@ -24,12 +24,13 @@ for f in ./validators/*.txt; do
 
     validator_start_idx="$val_name_idx"
     val_name_idx=$(expr $val_name_idx + $validator_count)
+    validator_end_idx=$(expr $val_name_idx - 1)
 
     if [ $validator_count -gt 0 ]; then
       val_name_count=$(expr $val_name_count + 1)
 
       if [ $validator_count -gt 1 ]; then
-        echo "${validator_start_idx}-${val_name_idx}: "'"'"$validator_name"'"' >> $outfile
+        echo "${validator_start_idx}-${validator_end_idx}: "'"'"$validator_name"'"' >> $outfile
       else
         echo "${validator_start_idx}: "'"'"$validator_name"'"' >> $outfile
       fi
