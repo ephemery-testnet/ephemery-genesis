@@ -2,9 +2,7 @@
 set -x
 
 get_github_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | jq -r ".tag_name"
 }
 
 if ! [ -d ./temp/lighthouse ]; then
