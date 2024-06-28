@@ -28,12 +28,21 @@ gen_all_config(){
     # run ethereum-genesis-generator
     docker run --rm -u $UID -v $PWD/temp/output:/data \
         -v $PWD/temp/input:/config \
-        ethpandaops/ethereum-genesis-generator:2.0.11 \
+        ethpandaops/ethereum-genesis-generator:3.3.5 \
         all
 
     # copy config folder structure
-    cp ./temp/output/custom_config_data -r ./dist
-    rm ./dist/mnemonics.yaml
+    mkdir ./dist
+    cp ./temp/output/metadata -r ./dist/metadata
+    cp ./temp/output/parsed -r ./dist/parsed
+    
+    if [ -f ./dist/metadata/mnemonics.yaml ]; then
+        rm ./dist/metadata/mnemonics.yaml
+    fi
+    if [ -d ./dist/metadata/tranches ]; then
+        rmdir ./dist/metadata/tranches
+    fi
+
     rm -rf ./temp
 
     # build retention vars
@@ -45,8 +54,7 @@ gen_all_config(){
     echo 'export CHAIN_ID="'"${CHAIN_ID}"'"' >> ./dist/retention.vars
 
     # copy el bootnodes
-    cp ./el-bootnodes.txt ./dist/boot_enode.txt
-    cp ./el-bootnodes.txt ./dist/bootnode.txt
+    cp ./el-bootnodes.txt ./dist/metadata/enodes.txt
 
     ls -lah ./dist
 }

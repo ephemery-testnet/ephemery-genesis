@@ -23,17 +23,13 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 mkdir -p $tmp_dir
 mkdir -p ./dist/bootnode-keys
 
-if [ -f ./dist/boot_enr.txt ]; then
-  rm ./dist/boot_enr.txt
-fi
-if [ -f ./dist/bootstrap_nodes.txt ]; then
-  rm ./dist/bootstrap_nodes.txt
+if [ -f ./dist/metadata/bootstrap_nodes.txt ]; then
+  rm ./dist/metadata/bootstrap_nodes.txt
 fi
 
 add_bootnode_enr() {
   echo "add enr: $1"
-  echo "$1" >> ./dist/bootstrap_nodes.txt
-  echo "- $1" >> ./dist/boot_enr.txt
+  echo "$1" >> ./dist/metadata/bootstrap_nodes.txt
 }
 
 add_bootnode_key() {
@@ -95,4 +91,3 @@ cat ./cl-bootnodes.txt | while read line ; do
     fi
 done
 
-cp ./dist/boot_enr.txt ./dist/boot_enr.yaml

@@ -50,6 +50,9 @@ jobs:
     - name: Build nodevars.env
       run: bash ./scripts/build-nodevars.sh
 
+    - name: Build legacy configs
+      run: bash ./scripts/build-legacy-config.sh
+
     - name: Check all generated configs
       run: bash ./scripts/check-genesis.sh
 
@@ -82,18 +85,32 @@ jobs:
           | genesis.json | Execution Layer Genesis |
           | config.yaml | Consensus Layer Config  |
           | genesis.ssz | Consensus Layer Genesis |
-          | testnet-all.tar.gz | Full testnet configuration (`testnet` directory) |
+          | ephemery-genesis.tar.gz | All ephemery genesis config files (standardized layout) |
+          | testnet-all.tar.gz | Legacy genesis config structure  (`testnet` directory) |
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
     - name: Pack testnet configs
-      run: cd dist && tar cfz testnet-all.tar.gz *
+      run: cd dist && tar cfz ephemery-genesis.tar.gz *
 
     - name: Upload full config artifact
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/testnet-all.tar.gz
+        asset_path: ./dist/ephemery-genesis.tar.gz
+        asset_name: ephemery-genesis.tar.gz
+        asset_content_type: application/gzip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+    - name: Pack legacy testnet configs
+      run: cd dist2 && tar cfz testnet-all.tar.gz *
+
+    - name: Upload full config artifact
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist2/testnet-all.tar.gz
         asset_name: testnet-all.tar.gz
         asset_content_type: application/gzip
       env:
@@ -103,7 +120,7 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/genesis.json
+        asset_path: ./dist/metadata/genesis.json
         asset_name: genesis.json
         asset_content_type: application/json
       env:
@@ -113,7 +130,7 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/config.yaml
+        asset_path: ./dist/metadata/config.yaml
         asset_name: config.yaml
         asset_content_type: application/yaml
       env:
@@ -122,7 +139,7 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/genesis.ssz
+        asset_path: ./dist/metadata/genesis.ssz
         asset_name: genesis.ssz
         asset_content_type: application/octet-stream
       env:
