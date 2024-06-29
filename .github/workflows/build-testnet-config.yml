@@ -27,32 +27,44 @@ jobs:
     - name: Build nodevars.env
       run: bash ./scripts/build-nodevars.sh
 
+    - name: Build legacy configs
+      run: bash ./scripts/build-legacy-config.sh
+    
     - name: Check all generated configs
       run: bash ./scripts/check-genesis.sh
 
     - name: Pack testnet configs
-      run: cd dist && tar cfz testnet-all.tar.gz *
+      run: cd dist && tar cfz network-config.tar.gz *
 
     - name: Upload full config artifact
       uses: actions/upload-artifact@v3
       with:
-        path: ./dist/testnet-all.tar.gz
+        path: ./dist/network-config.tar.gz
+        name: network-config.tar.gz
+    
+    - name: Pack legacy testnet configs
+      run: cd dist2 && tar cfz testnet-all.tar.gz *
+
+    - name: Upload full config artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./dist2/testnet-all.tar.gz
         name: testnet-all.tar.gz
     
     - name: Upload genesis.json artifact
       uses: actions/upload-artifact@v3
       with:
-        path: ./dist/genesis.json
+        path: ./dist/metadata/genesis.json
         name: genesis.json
     
     - name: Upload config.yaml artifact
       uses: actions/upload-artifact@v3
       with:
-        path: ./dist/config.yaml
+        path: ./dist/metadata/config.yaml
         name: config.yaml
     - name: Upload genesis.ssz artifact
       uses: actions/upload-artifact@v3
       with:
-        path: ./dist/genesis.ssz
+        path: ./dist/metadata/genesis.ssz
         name: genesis.ssz
     

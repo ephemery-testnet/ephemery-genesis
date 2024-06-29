@@ -2,9 +2,7 @@
 set -x
 
 get_github_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | jq -r ".tag_name"
 }
 
 if ! [ -d ./temp/lighthouse ]; then
@@ -23,17 +21,17 @@ tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 mkdir -p $tmp_dir
 mkdir -p ./dist/bootnode-keys
 
-if [ -f ./dist/boot_enr.txt ]; then
-  rm ./dist/boot_enr.txt
+if [ -f ./dist/metadata/bootstrap_nodes.txt ]; then
+  rm ./dist/metadata/bootstrap_nodes.txt
 fi
-if [ -f ./dist/bootstrap_nodes.txt ]; then
-  rm ./dist/bootstrap_nodes.txt
+if [ -f ./dist/metadata/bootstrap_nodes.yaml ]; then
+  rm ./dist/metadata/bootstrap_nodes.yaml
 fi
 
 add_bootnode_enr() {
   echo "add enr: $1"
-  echo "$1" >> ./dist/bootstrap_nodes.txt
-  echo "- $1" >> ./dist/boot_enr.txt
+  echo "$1" >> ./dist/metadata/bootstrap_nodes.txt
+  echo "- $1" >> ./dist/metadata/bootstrap_nodes.yaml
 }
 
 add_bootnode_key() {
@@ -52,7 +50,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       add_bootnode_enr $line
     elif [ ${bootnode_data[0]} = "lh_bootnode" ]; then
       rm -rf $tmp_dir/*
-      ./temp/lighthouse/lighthouse boot_node --testnet-dir ./dist --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
+      ./temp/lighthouse/lighthouse boot_node --testnet-dir ./dist/metadata --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
       sleep 2
       killall lighthouse
       sleep 2
@@ -64,7 +62,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       fi
     elif [ ${bootnode_data[0]} = "lighthouse" ]; then
       rm -rf $tmp_dir/*
-      ./temp/lighthouse/lighthouse bn --testnet-dir ./dist --datadir $tmp_dir --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
+      ./temp/lighthouse/lighthouse bn --testnet-dir ./dist/metadata --datadir $tmp_dir --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
       sleep 10
       killall lighthouse
       sleep 2
@@ -77,7 +75,7 @@ cat ./cl-bootnodes.txt | while read line ; do
     elif [ ${bootnode_data[0]} = "teku" ]; then
       rm -rf $tmp_dir/*
       echo -n 0x$(openssl rand -hex 32 | tr -d "\n") > $tmp_dir/jwtsecret
-      docker run -d --restart unless-stopped --name teku-node -u $UID -v ./dist:/testnet:ro -p 5052:5052 -v $tmp_dir:/data consensys/teku:latest \
+      docker run -d --restart unless-stopped --name teku-node -u $UID -v ./dist/metadata:/testnet:ro -p 5052:5052 -v $tmp_dir:/data consensys/teku:latest \
         --network=/testnet/config.yaml --initial-state=/testnet/genesis.ssz \
         --ee-endpoint=http://172.17.0.1:8651 --ee-jwt-secret-file=/data/jwtsecret \
         --data-path=/data --p2p-enabled=true --p2p-interface=0.0.0.0 --p2p-advertised-ip=${bootnode_data[2]} --p2p-port=${bootnode_data[3]} --p2p-advertised-port=${bootnode_data[3]} \
@@ -95,4 +93,3 @@ cat ./cl-bootnodes.txt | while read line ; do
     fi
 done
 
-cp ./dist/boot_enr.txt ./dist/boot_enr.yaml
