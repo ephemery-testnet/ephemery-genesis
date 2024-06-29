@@ -17,6 +17,7 @@ mkdir ./dist2
 # /boot_enr.yaml                => /metadata/bootstrap_nodes.txt [as yaml list]
 # /bootnode.txt                 => /metadata/enodes.txt
 # /bootstrap_nodes.txt          => /metadata/bootstrap_nodes.txt
+# /bootstrap_nodes.yaml         => /metadata/bootstrap_nodes.yaml
 # /chainspec.json               => /metadata/chainspec.json
 # /config.yaml                  => /metadata/config.yaml
 # /deploy_block.txt             => /metadata/deposit_contract_block.txt
@@ -32,10 +33,10 @@ mkdir ./dist2
 # /validator-names.yaml         => /parsed/validator-names.yaml
 
 cp ./dist/metadata/* ./dist2/
-mv ./dist2/enodes.txt ./dist2/boot_enode.txt
+cp ./dist2/enodes.txt ./dist2/boot_enode.txt
 cp ./dist2/boot_enode.txt ./dist2/bootnode.txt
 cp ./dist2/bootstrap_nodes.txt ./dist2/boot_enr.txt
-cat ./dist2/boot_enr.txt | awk '{print "- " $0}' > ./dist2/boot_enr.yaml
+cp ./dist2/bootstrap_nodes.yaml ./dist2/boot_enr.yaml
 cp ./dist2/deposit_contract_block.txt ./dist2/deploy_block.txt
 
 cp ./dist/parsed/parsedConsensusGenesis.json ./dist2/parsedBeaconState.json

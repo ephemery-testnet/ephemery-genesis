@@ -24,10 +24,14 @@ mkdir -p ./dist/bootnode-keys
 if [ -f ./dist/metadata/bootstrap_nodes.txt ]; then
   rm ./dist/metadata/bootstrap_nodes.txt
 fi
+if [ -f ./dist/metadata/bootstrap_nodes.yaml ]; then
+  rm ./dist/metadata/bootstrap_nodes.yaml
+fi
 
 add_bootnode_enr() {
   echo "add enr: $1"
   echo "$1" >> ./dist/metadata/bootstrap_nodes.txt
+  echo "- $1" >> ./dist/metadata/bootstrap_nodes.yaml
 }
 
 add_bootnode_key() {
