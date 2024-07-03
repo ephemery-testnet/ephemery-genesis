@@ -3,7 +3,7 @@ shopt -s lastpipe
 
 source ./values.env
 
-outfile=./dist/validator-names.yaml
+outfile=./dist/parsed/validator-names.yaml
 
 val_name_idx=1
 val_name_count=1

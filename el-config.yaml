@@ -1,5 +1,7 @@
+preset_base: ${PRESET_BASE}
 chain_id: ${CHAIN_ID}
 deposit_contract_address: "${DEPOSIT_CONTRACT_ADDRESS}"
+mnemonic: ${EL_AND_CL_MNEMONIC}
 el_premine: {}
 el_premine_addrs: {
   # Sepolia genesis (core devs)
@@ -29,12 +31,14 @@ el_premine_addrs: {
   "0x57c3dfd40A86628B67721115d7A03C9F341d7718": 100000000ETH, # Remy Roy
 
   # faucets
-  "0xc90E920F4DCfd4954230edCaB168D0C5B9561e03": 1000000000ETH, # post-genesis distribution from https://github.com/taxmeifyoucan/ephemeral-testnet/blob/master/funding.txt  (pk910)
+  "0xc90E920F4DCfd4954230edCaB168D0C5B9561e03": 1000000000ETH, # post-genesis distribution from https://github.com/ephemery-testnet/ephemery-resources/blob/master/funding.txt
   "0x6Cc9397c3B38739daCbfaA68EaD5F5D77Ba5F455": 10000000ETH, # PoWFaucet: https://ephemery-faucet.pk910.de
   "0x992775d32fd0ec76b95C5E76CeEA92ED5a4bE1F9": 10000000ETH, # https://faucet.bordel.wtf/
 }
+additional_preloaded_contracts: ${ADDITIONAL_PRELOADED_CONTRACTS}
 genesis_timestamp: ${GENESIS_TIMESTAMP}
 genesis_delay: ${GENESIS_DELAY}
 genesis_gaslimit: ${GENESIS_GASLIMIT}
 slot_duration_in_seconds: ${SLOT_DURATION_IN_SECONDS}
-deneb_fork_epoch: ${DENEB_FORK_EPOCH}
+electra_fork_epoch: ${ELECTRA_FORK_EPOCH}
+eof_activation_epoch: ${EOF_ACTIVATION_EPOCH}
