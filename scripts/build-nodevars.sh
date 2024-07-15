@@ -7,8 +7,8 @@ echo 'ITERATION_NUMBER="'"$ITERATION_NUMBER"'"' >> ./dist/metadata/nodevars_env.
 echo 'CHAIN_ID="'"$CHAIN_ID"'"' >> ./dist/metadata/nodevars_env.txt
 echo 'BOOTNODE_ENR="'"$(cat ./dist/metadata/bootstrap_nodes.txt | sed -E '/^$/d' | head -n1)"'"' >> ./dist/metadata/nodevars_env.txt
 echo 'BOOTNODE_ENR_LIST="'"$(cat ./dist/metadata/bootstrap_nodes.txt | sed -E '/^$/d' | tr '\n' ',' | sed 's/,$//')"'"' >> ./dist/metadata/nodevars_env.txt
-echo 'BOOTNODE_ENODE="'"$(cat ./el-bootnodes.txt | sed -E '/^$/d' | head -n1)"'"' >> ./dist/metadata/nodevars_env.txt
-echo 'BOOTNODE_ENODE_LIST="'"$(cat ./el-bootnodes.txt | sed -E '/^$/d' | tr '\n' ',' | sed 's/,$//')"'"' >> ./dist/metadata/nodevars_env.txt
+echo 'BOOTNODE_ENODE="'"$(cat ./dist/metadata/enodes.txt | sed -E '/^$/d' | head -n1)"'"' >> ./dist/metadata/nodevars_env.txt
+echo 'BOOTNODE_ENODE_LIST="'"$(cat ./dist/metadata/enodes.txt | sed -E '/^$/d' | tr '\n' ',' | sed 's/,$//')"'"' >> ./dist/metadata/nodevars_env.txt
 echo 'GENESIS_TIME="'"$(cat ./dist/parsed/parsedConsensusGenesis.json | jq -r .genesis_time)"'"' >> ./dist/metadata/nodevars_env.txt
 
 genesis_validators_root=$(cat ./dist/parsed/parsedConsensusGenesis.json | jq -r .genesis_validators_root)
