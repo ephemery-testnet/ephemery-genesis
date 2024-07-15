@@ -53,9 +53,6 @@ gen_all_config(){
     echo 'export GENESIS_RESET_INTERVAL="'"${GENESIS_INTERVAL}"'"' >> ./dist/retention.vars
     echo 'export CHAIN_ID="'"${CHAIN_ID}"'"' >> ./dist/retention.vars
 
-    # copy el bootnodes
-    cp ./el-bootnodes.txt ./dist/metadata/enodes.txt
-
     ls -lah ./dist
 }
 
