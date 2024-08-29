@@ -10,8 +10,8 @@ if ! [ -d ./temp/lighthouse ]; then
   cd ./temp/lighthouse
 
   lighthouse_release=$(get_github_release sigp/lighthouse)
-  wget "https://github.com/sigp/lighthouse/releases/download/$lighthouse_release/lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu-portable.tar.gz"
-  tar xfz ./lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu-portable.tar.gz
+  wget "https://github.com/sigp/lighthouse/releases/download/$lighthouse_release/lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz"
+  tar xfz ./lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz
   chmod +x ./lighthouse
 
   cd ../..
