@@ -6,7 +6,7 @@ This list maps client diversity of Ephemery genesis validator set. If you partic
 | ---------- | -------- | -------------- | -------- | ------ | ----- | ---- |
 | Besu       |          |                |          |        |       |      |
 | Erigon     |          | @taxmeifyoucan |          |        |       |      |
-| Geth       |          | @taxmeifyoucan |          |        |       |      |
+| Geth       |          | @taxmeifyoucan, @remyroy |          |        |       |      |
 | Nethermind |          |                |          |        |       |      |
 | Reth       |          |                |          |        |       |      |
 
