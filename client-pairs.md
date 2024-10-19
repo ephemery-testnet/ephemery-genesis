@@ -4,7 +4,7 @@ This list maps client diversity of Ephemery genesis validator set. If you partic
 
 | Client     | Grandine | Lighthouse     | Lodestar | Nimbus | Prysm | Teku |
 | ---------- | -------- | -------------- | -------- | ------ | ----- | ---- |
-| Besu       |          |                |          |        |       |      |
+| Besu       |          |                |          |        |       |@coincashew      |
 | Erigon     |          | @taxmeifyoucan |          |        |       |      |
 | Geth       |          | @taxmeifyoucan, @remyroy |          |        |       |      |
 | Nethermind |          |                |          |        |       |      |
