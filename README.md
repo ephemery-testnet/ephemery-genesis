@@ -18,7 +18,7 @@ You can use [eth2-val-tools](https://github.com/protolambda/eth2-val-tools) in a
 export MNEMONIC="your mnemonic"
 eth2-val-tools deposit-data --fork-version 0x10001008 --source-max 200 --source-min 0 --validators-mnemonic="$MNEMONIC" --withdrawals-mnemonic="$MNEMONIC" --as-json-list | jq ".[] | \"0x\" + .pubkey + \":\" + .withdrawal_credentials + \":32000000000\"" | tr -d '"' > name-node1.txt
 ```
-Alternativally, you can also use [staking-deposit-cli](https://github.com/remyroy/staking-deposit-cli/releases/tag/v2.3.0.ephemery) which provides a guide. Complete the process using a new or existing mnemonic and parse the generated file with a command like this:
+Alternativally, you can also use [ethstaker-deposit-cli](https://github.com/eth-educators/ethstaker-deposit-cli) which has support for creating Ephemery validator keys. Complete the process using a new or existing mnemonic and parse the generated file with a command like this:
 
 ```
 cat deposit_data-*.json | jq ".[] | \"0x\" + .pubkey + \":\" + .withdrawal_credentials + \":32000000000\"" | tr -d '"' > name-node1.txt
