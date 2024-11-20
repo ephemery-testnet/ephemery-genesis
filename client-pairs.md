@@ -6,7 +6,7 @@ This list maps client diversity of Ephemery genesis validator set. If you partic
 | ---------- | -------- | ------------------------ | ------------------- | ------ | ------------------ | ------------------- |
 | Besu       |          |                          | @metanull-operator  |        |                    | @coincashew         |
 | Erigon     |          | @taxmeifyoucan           |                     |        |                    |                     |
-| Geth       |          | @taxmeifyoucan, @remyroy | @superphiz          |        |                    |                     |
+| Geth       |          | @taxmeifyoucan, @remyroy | @superphiz          |        | @SeaMonkey82       |                     |
 | Nethermind |          |                          |                     |        | @metanull-operator | pandaops            |
 | Reth       |          | @chiemerieezechukwu      | @chiemerieezechukwu |        |                    | @chiemerieezechukwu |
 
