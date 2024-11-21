@@ -6,8 +6,8 @@ This list maps client diversity of Ephemery genesis validator set. If you partic
 | ---------- | -------- | ------------------------ | ------------------- | ------ | ------------------ | ------------------- |
 | Besu       |          |                          | @metanull-operator  |        |                    | @coincashew         |
 | Erigon     |          | @taxmeifyoucan           |                     |        |                    |                     |
-| Geth       |          | @taxmeifyoucan, @remyroy | @superphiz          |        |                    |                     |
-| Nethermind |          | @icelandcalling          | @icelandcalling     |        | @metanull-operator | pandaops            |
+| Geth       |          | @taxmeifyoucan, @remyroy | @superphiz          |        | @SeaMonkey82       |                     |
+| Nethermind |          | @icelandcalling          | @icelandcalling     |        | @metanull-operator | @ethpandaops        |
 | Reth       |          | @chiemerieezechukwu      | @chiemerieezechukwu |        |                    | @chiemerieezechukwu |
 
 Our goal is to run a diverse network with each possible client combination. Claim your client pair to participate in the [incentive program]( https://notes.ethereum.org/@MarioHavel/ephemery-incentives) and help us achieve this goal!
