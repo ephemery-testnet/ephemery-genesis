@@ -28,7 +28,7 @@ gen_all_config(){
     # run ethereum-genesis-generator
     docker run --rm -u $UID -v $PWD/temp/output:/data \
         -v $PWD/temp/input:/config \
-        ethpandaops/ethereum-genesis-generator:ephemery-1.0.2 \
+        ethpandaops/ethereum-genesis-generator:ephemery-v1.0.2 \
         all
 
     # copy config folder structure
