@@ -75,7 +75,8 @@ cat ./cl-bootnodes.txt | while read line ; do
     fi
   elif [ ${bootnode_data[0]} = "lighthouse" ]; then
     rm -rf $tmp_dir/*
-    ./temp/lighthouse/lighthouse bn --testnet-dir ./dist/metadata --datadir $tmp_dir --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
+    echo -n 0x$(openssl rand -hex 32 | tr -d "\n") > $tmp_dir/jwtsecret
+    ./temp/lighthouse/lighthouse bn --testnet-dir ./dist/metadata --datadir $tmp_dir --execution-endpoint http://127.0.0.1:8551 --execution-jwt $tmp_dir/jwtsecret --enr-address ${bootnode_data[2]} --enr-udp-port ${bootnode_data[3]} --port ${bootnode_data[3]} &
     sleep 10
     killall lighthouse
     sleep 2
