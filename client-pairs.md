@@ -4,9 +4,9 @@ This list maps client diversity of Ephemery genesis validator set. If you partic
 
 | Client     | Grandine | Lighthouse               | Lodestar            | Nimbus          | Prysm              | Teku                |
 | ---------- | -------- | ------------------------ | ------------------- | --------------- | ------------------ | ------------------- |
-| Besu       |          | @SeaMonkey82             | @metanull-operator  |                 | @SeaMonkey82       | @coincashew         |
+| Besu       |          | @SeaMonkey82             | @metanull-operator  |                 |                    | @coincashew         |
 | Erigon     |          | @taxmeifyoucan           |                     |                 |                    |                     |
-| Geth       |          | @taxmeifyoucan, @remyroy | @superphiz          |                 | @SeaMonkey82       |                     |
+| Geth       |          | @taxmeifyoucan, @remyroy | @superphiz          | @SeaMonkey82    |                    | @SeaMonkey82        |
 | Nethermind |          | @icelandcalling          | @icelandcalling     | @icelandcalling | @metanull-operator | @ethpandaops        |
 | Reth       |          | @chiemerieezechukwu      | @chiemerieezechukwu | @hydepwns       |                    | @chiemerieezechukwu |
 
