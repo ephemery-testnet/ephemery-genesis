@@ -9,7 +9,8 @@ if ! [ -d ./temp/lighthouse ]; then
   mkdir -p ./temp/lighthouse
   cd ./temp/lighthouse
 
-  lighthouse_release=$(get_github_release sigp/lighthouse)
+  #lighthouse_release=$(get_github_release sigp/lighthouse)
+  lighthouse_release="v7.0.0-beta.7"
   wget "https://github.com/sigp/lighthouse/releases/download/$lighthouse_release/lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz"
   tar xfz ./lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz
   chmod +x ./lighthouse
@@ -116,3 +117,12 @@ cat ./el-bootnodes.txt | while read line ; do
 
   add_bootnode_enode $line
 done
+
+bootnodes_json=$(cat ./dist/metadata/enodes.txt | jq -R | jq -c -s)
+
+jq '.config.discovery.bootnodes = '"$bootnodes_json" ./dist/metadata/besu.json > ./dist/metadata/besu.json.out
+mv ./dist/metadata/besu.json.out ./dist/metadata/besu.json
+
+jq '.nodes = '"$bootnodes_json" ./dist/metadata/chainspec.json > ./dist/metadata/chainspec.json.out
+mv ./dist/metadata/chainspec.json.out ./dist/metadata/chainspec.json
+
