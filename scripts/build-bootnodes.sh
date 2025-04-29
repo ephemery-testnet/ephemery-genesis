@@ -95,7 +95,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       --ee-endpoint=http://172.17.0.1:8651 --ee-jwt-secret-file=/data/jwtsecret \
       --data-path=/data --p2p-enabled=true --p2p-interface=0.0.0.0 --p2p-advertised-ip=${bootnode_data[2]} --p2p-port=${bootnode_data[3]} --p2p-advertised-port=${bootnode_data[3]} \
       --rest-api-enabled --rest-api-interface=0.0.0.0 --rest-api-host-allowlist=* --rest-api-port=5052 \
-      --Xpeer-rate-limit=100000 --Xpeer-request-limit=1000 --ignore-weak-subjectivity-period-enabled --data-storage-non-canonical-blocks-enabled=true
+      --ignore-weak-subjectivity-period-enabled --data-storage-non-canonical-blocks-enabled=true
     sleep 10
     bootnode_enr=$(curl -s http://127.0.0.1:5052/eth/v1/node/identity | jq -r .data.enr)
     docker rm -f teku-node
