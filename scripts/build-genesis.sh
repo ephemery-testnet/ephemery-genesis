@@ -13,7 +13,7 @@ gen_all_config(){
     mkdir -p ./temp/output
     mkdir -p ./temp/input/cl
     cp ./cl-config.yaml ./temp/input/cl/config.yaml
-    echo "" > ./temp/input/cl/mnemonics.yaml
+    echo "[]" > ./temp/input/cl/mnemonics.yaml
     mkdir -p ./temp/input/el
     cp ./el-config.yaml ./temp/input/el/genesis-config.yaml
     cp ./values.env ./temp/input/values.env
@@ -28,7 +28,7 @@ gen_all_config(){
     # run ethereum-genesis-generator
     docker run --rm -u $UID -v $PWD/temp/output:/data \
         -v $PWD/temp/input:/config \
-        ethpandaops/ethereum-genesis-generator:ephemery-1.1.0 \
+        ethpandaops/ethereum-genesis-generator:4.0.4 \
         all
 
     # copy config folder structure

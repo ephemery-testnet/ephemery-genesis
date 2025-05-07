@@ -9,7 +9,8 @@ if ! [ -d ./temp/lighthouse ]; then
   mkdir -p ./temp/lighthouse
   cd ./temp/lighthouse
 
-  lighthouse_release=$(get_github_release sigp/lighthouse)
+  #lighthouse_release=$(get_github_release sigp/lighthouse)
+  lighthouse_release="v7.0.0-beta.7"
   wget "https://github.com/sigp/lighthouse/releases/download/$lighthouse_release/lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz"
   tar xfz ./lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz
   chmod +x ./lighthouse
@@ -94,7 +95,7 @@ cat ./cl-bootnodes.txt | while read line ; do
       --ee-endpoint=http://172.17.0.1:8651 --ee-jwt-secret-file=/data/jwtsecret \
       --data-path=/data --p2p-enabled=true --p2p-interface=0.0.0.0 --p2p-advertised-ip=${bootnode_data[2]} --p2p-port=${bootnode_data[3]} --p2p-advertised-port=${bootnode_data[3]} \
       --rest-api-enabled --rest-api-interface=0.0.0.0 --rest-api-host-allowlist=* --rest-api-port=5052 \
-      --Xpeer-rate-limit=100000 --Xpeer-request-limit=1000 --ignore-weak-subjectivity-period-enabled --data-storage-non-canonical-blocks-enabled=true
+      --ignore-weak-subjectivity-period-enabled --data-storage-non-canonical-blocks-enabled=true
     sleep 10
     bootnode_enr=$(curl -s http://127.0.0.1:5052/eth/v1/node/identity | jq -r .data.enr)
     docker rm -f teku-node
@@ -116,3 +117,12 @@ cat ./el-bootnodes.txt | while read line ; do
 
   add_bootnode_enode $line
 done
+
+bootnodes_json=$(cat ./dist/metadata/enodes.txt | jq -R | jq -c -s)
+
+jq '.config.discovery.bootnodes = '"$bootnodes_json" ./dist/metadata/besu.json > ./dist/metadata/besu.json.out
+mv ./dist/metadata/besu.json.out ./dist/metadata/besu.json
+
+jq '.nodes = '"$bootnodes_json" ./dist/metadata/chainspec.json > ./dist/metadata/chainspec.json.out
+mv ./dist/metadata/chainspec.json.out ./dist/metadata/chainspec.json
+
