@@ -13,7 +13,6 @@ gen_all_config(){
     mkdir -p ./temp/output
     mkdir -p ./temp/input/cl
     cp ./cl-config.yaml ./temp/input/cl/config.yaml
-    cp ./cl-config-genesis-zero.yaml ./temp/input/cl/config-genesis-zero.yaml
     echo "[]" > ./temp/input/cl/mnemonics.yaml
     mkdir -p ./temp/input/el
     cp ./el-config.yaml ./temp/input/el/genesis-config.yaml
