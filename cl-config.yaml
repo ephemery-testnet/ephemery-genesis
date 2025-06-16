@@ -38,6 +38,8 @@ SECONDS_PER_ETH1_BLOCK: 12
 ETH1_FOLLOW_DISTANCE: 12
 MIN_VALIDATOR_WITHDRAWABILITY_DELAY: 256
 SHARD_COMMITTEE_PERIOD: 256
+# The period of time after which the network resets
+EPHEMERY_RESET_PERIOD: 2419200
 
 # Validator cycle
 # ---------------------------------------------------------------
