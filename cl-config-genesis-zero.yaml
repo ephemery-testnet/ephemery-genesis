@@ -1,6 +1,6 @@
 # Extends the mainnet preset
 PRESET_BASE: mainnet
-CONFIG_NAME: testnet # required by Prysm, prevents conflict with mainnet genesis
+CONFIG_NAME: ephemery # required by Prysm, prevents conflict with mainnet genesis
 
 # Genesis
 # ---------------------------------------------------------------
