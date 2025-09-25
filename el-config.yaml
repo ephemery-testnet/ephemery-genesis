@@ -53,5 +53,3 @@ target_blobs_per_block_prague: ${TARGET_BLOBS_PER_BLOCK_ELECTRA}
 max_blobs_per_block_prague: ${MAX_BLOBS_PER_BLOCK_ELECTRA}
 basefee_update_fraction_prague: ${BASEFEE_UPDATE_FRACTION_ELECTRA}
 target_blobs_per_block_osaka: ${TARGET_BLOBS_PER_BLOCK_FULU}
-max_blobs_per_block_osaka: ${MAX_BLOBS_PER_BLOCK_FULU}
-basefee_update_fraction_osaka: ${BASEFEE_UPDATE_FRACTION_FULU}
