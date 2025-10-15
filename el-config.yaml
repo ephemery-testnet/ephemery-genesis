@@ -46,6 +46,7 @@ bellatrix_fork_epoch: ${BELLATRIX_FORK_EPOCH}
 capella_fork_epoch: ${CAPELLA_FORK_EPOCH}
 deneb_fork_epoch: ${DENEB_FORK_EPOCH}
 electra_fork_epoch: ${ELECTRA_FORK_EPOCH}
+fulu_fork_epoch: ${FULU_FORK_EPOCH}
 target_blobs_per_block_cancun: 3
 max_blobs_per_block_cancun: 6
 basefee_update_fraction_cancun: 3338477
