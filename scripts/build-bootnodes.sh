@@ -10,7 +10,7 @@ if ! [ -d ./temp/lighthouse ]; then
   cd ./temp/lighthouse
 
   #lighthouse_release=$(get_github_release sigp/lighthouse)
-  lighthouse_release="v7.0.0-beta.7"
+  lighthouse_release="v8.0.0-rc.2"
   wget "https://github.com/sigp/lighthouse/releases/download/$lighthouse_release/lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz"
   tar xfz ./lighthouse-${lighthouse_release}-x86_64-unknown-linux-gnu.tar.gz
   chmod +x ./lighthouse
@@ -52,6 +52,8 @@ add_bootnode_enode() {
   echo "$1" >> ./dist/metadata/enodes.txt
 }
 
+genesis_validators_root=$(cat ./dist/parsed/parsedConsensusGenesis.json | jq -r .genesis_validators_root)
+
 # build cl bootnodes
 cat ./cl-bootnodes.txt | while read line ; do
   if [ -z "$line" ] || [[ "$line" == \#* ]]; then
@@ -62,6 +64,26 @@ cat ./cl-bootnodes.txt | while read line ; do
   if [ ${bootnode_data[0]} = "enr" ]; then
     # generic ENR
     add_bootnode_enr $line
+  elif [ ${bootnode_data[0]} = "bootnodoor" ]; then
+    rm -rf $tmp_dir/*
+    privkey=$(openssl rand -hex 32 | tr -d "\n")
+    echo -n $privkey > $tmp_dir/bootnode.key
+    docker run -d --restart unless-stopped --name bootnodoor -u $UID -v ./dist/metadata:/testnet:ro -p 8080:8080 -v $tmp_dir:/data \
+      ethpandaops/bootnodoor:latest \
+      --cl-config /testnet/config.yaml --genesis-validators-root $genesis_validators_root \
+      --private-key "$privkey" --web-ui \
+      --bind-addr 0.0.0.0 --bind-port ${bootnode_data[3]} \
+      --enr-ip ${bootnode_data[2]} --enr-port ${bootnode_data[3]}
+
+    sleep 2
+    bootnode_enr=$(curl -s http://127.0.0.1:8080/enr)
+    docker rm -f bootnodoor
+    sleep 2
+    if [ ! -z "$bootnode_enr" ]; then
+      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
+      add_bootnode_key ${bootnode_data[1]} $tmp_dir/bootnode.key
+      add_bootnode_enr $bootnode_enr
+    fi
   elif [ ${bootnode_data[0]} = "lh_bootnode" ]; then
     rm -rf $tmp_dir/*
     ./temp/lighthouse/lighthouse boot_node --testnet-dir ./dist/metadata --datadir $tmp_dir --port ${bootnode_data[3]} --enr-address ${bootnode_data[2]} &
