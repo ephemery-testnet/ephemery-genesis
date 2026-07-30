@@ -2,6 +2,7 @@
 
 # ephemery infrastructure server
 teku:bootnode_eph1:137.74.203.240:9100
+bootnodoor:bootnode_eph2:137.74.203.240:9200
 enr:-Iq4QNMYHuJGbnXyBj6FPS2UkOQ-hnxT-mIdNMMr7evR9UYtLemaluorL6J10RoUG1V4iTPTEbl3huijSNs5_ssBWFiGAYhBNHOzgmlkgnY0gmlwhIlKy_CJc2VjcDI1NmsxoQNULnJBzD8Sakd9EufSXhM4rQTIkhKBBTmWVJUtLCp8KoN1ZHCCIyk
 
 # pk910 bootnode 1
