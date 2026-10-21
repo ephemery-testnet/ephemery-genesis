@@ -7,6 +7,7 @@ set -x
 # Override via environment (eg. LIGHTHOUSE_IMAGE=sigp/lighthouse:v8.0.0) to switch images.
 LIGHTHOUSE_IMAGE="${LIGHTHOUSE_IMAGE:-ethpandaops/lighthouse:unstable}"
 TEKU_IMAGE="${TEKU_IMAGE:-ethpandaops/teku:master}"
+BOOTNODOOR_IMAGE="${BOOTNODOOR_IMAGE:-ethpandaops/bootnodoor:latest}"
 
 # max seconds to wait for a client to write its ENR
 BOOTNODE_TIMEOUT="${BOOTNODE_TIMEOUT:-120}"
@@ -69,6 +70,9 @@ bootnode_failed() {
   >&2 echo "WARNING: could not generate ENR for bootnode $1 ($2)"
 }
 
+# genesis validators root of the current iteration (needed by bootnodoor for the eth2 ENR field)
+genesis_validators_root=$(cat ./dist/parsed/parsedConsensusGenesis.json | jq -r .genesis_validators_root)
+
 # build cl bootnodes
 cat ./cl-bootnodes.txt | while read line ; do
   if [ -z "$line" ] || [[ "$line" == \#* ]]; then
@@ -79,6 +83,35 @@ cat ./cl-bootnodes.txt | while read line ; do
   if [ ${bootnode_data[0]} = "enr" ]; then
     # generic ENR
     add_bootnode_enr $line
+  elif [ ${bootnode_data[0]} = "bootnodoor" ]; then
+    # bootnodoor (ethpandaops/bootnodoor): generate the CL ENR for a fresh per-iteration key.
+    # Only the node identity matters here, so EL discovery is disabled for the generation run.
+    rm -rf $tmp_dir/*
+    privkey=$(openssl rand -hex 32 | tr -d "\n")
+    echo -n $privkey > $tmp_dir/bootnode.key
+    docker run -d --name bootnodoor-gen -u $UID -v $metadata_dir:/testnet:ro -p 127.0.0.1:8080:8080 $BOOTNODOOR_IMAGE \
+      --cl-config /testnet/config.yaml --genesis-validators-root $genesis_validators_root \
+      --enable-el=false \
+      --private-key "$privkey" --web-ui \
+      --bind-addr 0.0.0.0 --bind-port ${bootnode_data[3]} \
+      --enr-ip ${bootnode_data[2]} --enr-port ${bootnode_data[3]}
+    bootnode_enr=""
+    for i in $(seq 1 $BOOTNODE_TIMEOUT); do
+      bootnode_enr=$(curl -s http://127.0.0.1:8080/enr 2>/dev/null || true)
+      if [[ "$bootnode_enr" == enr:* ]]; then
+        break
+      fi
+      bootnode_enr=""
+      sleep 1
+    done
+    stop_container bootnodoor-gen
+    if [ ! -z "$bootnode_enr" ]; then
+      echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
+      add_bootnode_key ${bootnode_data[1]} $tmp_dir/bootnode.key
+      add_bootnode_enr $bootnode_enr
+    else
+      bootnode_failed ${bootnode_data[1]} "bootnodoor, image $BOOTNODOOR_IMAGE"
+    fi
   elif [ ${bootnode_data[0]} = "lh_bootnode" ]; then
     # lighthouse boot_node (discovery only)
     rm -rf $tmp_dir/*

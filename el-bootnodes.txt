@@ -1,6 +1,8 @@
 # ephemery el bootnodes
 
 # ephemery infrastructure server
+# bootnodoor (static EL identity, port 9200/udp)
+enode://bb0d06aab0c197b2c51cf8cc0993f96cfda8ff03e18533f7684b5ec3039ba3f84f357669950127922dd789935d6d8d6be18c385698a423fedc1d8692d1a60b5a@137.74.203.240:9200
 enode://50a54ecbd2175497640bcf46a25bbe9bb4fae51d7cc2a29ef4947a7ee17496cf39a699b7fe6b703ed0feb9dbaae7e44fc3827fcb7435ca9ac6de4daa4d983b3d@137.74.203.240:30303
 
 # pk910 bootnode 2
