@@ -65,24 +65,39 @@ cat ./cl-bootnodes.txt | while read line ; do
     # generic ENR
     add_bootnode_enr $line
   elif [ ${bootnode_data[0]} = "bootnodoor" ]; then
+    # bootnodoor (ethpandaops/bootnodoor): generate the CL ENR for the configured key.
+    # Only the node identity matters here, so EL discovery is disabled for the generation run.
     rm -rf $tmp_dir/*
     privkey=$(openssl rand -hex 32 | tr -d "\n")
     echo -n $privkey > $tmp_dir/bootnode.key
-    docker run -d --restart unless-stopped --name bootnodoor -u $UID -v ./dist/metadata:/testnet:ro -p 8080:8080 -v $tmp_dir:/data \
-      ethpandaops/bootnodoor:latest \
+    docker run -d --name bootnodoor-gen -u $UID -v $(pwd)/dist/metadata:/testnet:ro -p 127.0.0.1:8080:8080 \
+      ${BOOTNODOOR_IMAGE:-ethpandaops/bootnodoor:latest} \
       --cl-config /testnet/config.yaml --genesis-validators-root $genesis_validators_root \
+      --enable-el=false \
       --private-key "$privkey" --web-ui \
       --bind-addr 0.0.0.0 --bind-port ${bootnode_data[3]} \
       --enr-ip ${bootnode_data[2]} --enr-port ${bootnode_data[3]}
 
-    sleep 2
-    bootnode_enr=$(curl -s http://127.0.0.1:8080/enr)
-    docker rm -f bootnodoor
-    sleep 2
+    bootnode_enr=""
+    for i in $(seq 1 ${BOOTNODE_TIMEOUT:-120}); do
+      bootnode_enr=$(curl -s http://127.0.0.1:8080/enr 2>/dev/null || true)
+      if [[ "$bootnode_enr" == enr:* ]]; then
+        break
+      fi
+      bootnode_enr=""
+      sleep 1
+    done
+    echo "--- bootnodoor-gen logs ---"
+    docker logs --tail 20 bootnodoor-gen 2>&1 || true
+    echo "--- end bootnodoor-gen logs ---"
+    docker rm -f bootnodoor-gen > /dev/null 2>&1 || true
+
     if [ ! -z "$bootnode_enr" ]; then
       echo "$bootnode_enr" >> ./dist/bootnode-keys/${bootnode_data[1]}.enr
       add_bootnode_key ${bootnode_data[1]} $tmp_dir/bootnode.key
       add_bootnode_enr $bootnode_enr
+    else
+      >&2 echo "WARNING: could not generate ENR for bootnode ${bootnode_data[1]} (bootnodoor, image ${BOOTNODOOR_IMAGE:-ethpandaops/bootnodoor:latest})"
     fi
   elif [ ${bootnode_data[0]} = "lh_bootnode" ]; then
     rm -rf $tmp_dir/*
