@@ -18,8 +18,6 @@ check_file() {
 check_genesis(){
     cd ./dist
 
-    check_file metadata/besu.json
-    check_file metadata/chainspec.json
     check_file metadata/genesis.json
     check_file metadata/config.yaml
     check_file metadata/genesis.ssz
@@ -37,8 +35,6 @@ check_genesis(){
 check_legacy_genesis(){
     cd ./dist2
 
-    check_file besu.json
-    check_file chainspec.json
     check_file genesis.json
     check_file config.yaml
     check_file genesis.ssz
